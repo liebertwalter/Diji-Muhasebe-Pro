@@ -1,0 +1,3423 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diji Muhasebe - Tam Proje Kodları</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        h1 { color: #3b82f6; font-size: 2.5em; margin-bottom: 10px; text-align: center; }
+        h2 { color: #10b981; font-size: 1.8em; margin: 30px 0 15px; border-bottom: 2px solid #10b981; padding-bottom: 10px; }
+        h3 { color: #f59e0b; font-size: 1.4em; margin: 20px 0 10px; }
+        h4 { color: #8b5cf6; font-size: 1.2em; margin: 15px 0 8px; }
+        p { margin-bottom: 15px; }
+        .section { background: #1e293b; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+        code { background: #0f172a; color: #22d3ee; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; }
+        pre { background: #0f172a; padding: 15px; border-radius: 8px; overflow-x: auto; margin: 10px 0; border-left: 4px solid #3b82f6; }
+        pre code { display: block; padding: 10px; font-size: 0.85em; line-height: 1.5; }
+        .folder-structure { background: #1e293b; padding: 20px; border-radius: 10px; }
+        .folder { margin-left: 20px; color: #f59e0b; }
+        .file { margin-left: 40px; color: #22d3ee; }
+        .highlight { background: #f59e0b; color: #0f172a; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+        .warning { background: #7c3aed; color: white; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .info-box { background: #2563eb; color: white; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        ul { margin-left: 30px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+        .step { background: #059669; color: white; padding: 8px 15px; border-radius: 20px; display: inline-block; margin: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Diji Muhasebe - Tam Proje Kodları</h1>
+        <p style="text-align: center; font-size: 1.2em; color: #94a3b8;">Türkiye Mevzuatına Uygun Kapsamlı ERP & Muhasebe Yazılımı</p>
+        
+        <div class="info-box">
+            <strong>Tech Stack:</strong> Next.js (App Router) + TypeScript + Tailwind CSS + NestJS + PostgreSQL + Prisma + NextAuth.js
+        </div>
+
+        <h2>📁 1. Proje Klasör Yapısı</h2>
+        <div class="section">
+            <pre><code>diji-muhasebe/
+├── apps/
+│   ├── api/                              # NestJS Backend
+│   │   ├── src/
+│   │   │   ├── modules/
+│   │   │   │   ├── auth/                 # Kimlik doğrulama modülü
+│   │   │   │   │   ├── auth.controller.ts
+│   │   │   │   │   ├── auth.service.ts
+│   │   │   │   │   ├── auth.module.ts
+│   │   │   │   │   ├── strategies/
+│   │   │   │   │   │   └── jwt.strategy.ts
+│   │   │   │   │   └── dto/
+│   │   │   │   │       ├── login.dto.ts
+│   │   │   │   │       └── register.dto.ts
+│   │   │   │   ├── tenant/               # Çoklu firma (Multi-Tenancy)
+│   │   │   │   │   ├── tenant.controller.ts
+│   │   │   │   │   ├── tenant.service.ts
+│   │   │   │   │   └── tenant.module.ts
+│   │   │   │   ├── users/                # Kullanıcı yönetimi
+│   │   │   │   │   ├── users.controller.ts
+│   │   │   │   │   ├── users.service.ts
+│   │   │   │   │   └── users.module.ts
+│   │   │   │   ├── current-account/      # Cari hesaplar
+│   │   │   │   │   ├── current-account.controller.ts
+│   │   │   │   │   ├── current-account.service.ts
+│   │   │   │   │   └── current-account.module.ts
+│   │   │   │   ├── inventory/           # Stok yönetimi
+│   │   │   │   │   ├── inventory.controller.ts
+│   │   │   │   │   ├── inventory.service.ts
+│   │   │   │   │   └── inventory.module.ts
+│   │   │   │   ├── invoice/             # Fatura yönetimi
+│   │   │   │   │   ├── invoice.controller.ts
+│   │   │   │   │   ├── invoice.service.ts
+│   │   │   │   │   └── invoice.module.ts
+│   │   │   │   ├── accounting/          # Genel muhasebe
+│   │   │   │   │   ├── accounting.controller.ts
+│   │   │   │   │   ├── accounting.service.ts
+│   │   │   │   │   └── accounting.module.ts
+│   │   │   │   ├── finance/              # Finans/Kasa/Banka
+│   │   │   │   │   ├── finance.controller.ts
+│   │   │   │   │   ├── finance.service.ts
+│   │   │   │   │   └── finance.module.ts
+│   │   │   │   ├── checks/               # Çek/Senet modülü
+│   │   │   │   │   ├── checks.controller.ts
+│   │   │   │   │   ├── checks.service.ts
+│   │   │   │   │   └── checks.module.ts
+│   │   │   │   ├── hr/                   # Personel/Bordro
+│   │   │   │   │   ├── hr.controller.ts
+│   │   │   │   │   ├── hr.service.ts
+│   │   │   │   │   └── hr.module.ts
+│   │   │   │   └── reports/              # Raporlama
+│   │   │   │       ├── reports.controller.ts
+│   │   │   │       ├── reports.service.ts
+│   │   │   │       └── reports.module.ts
+│   │   │   ├── common/
+│   │   │   │   ├── decorators/          # Özel dekoratörler
+│   │   │   │   ├── guards/               # Yetkilendirme korumaları
+│   │   │   │   ├── interceptors/        # Interceptörler
+│   │   │   │   ├── filters/              # Exception filtreleri
+│   │   │   │   └── constants/            # Sabitler
+│   │   │   ├── config/                   # Konfigürasyon
+│   │   │   ├── database/                 # Veritabanı
+│   │   │   │   └── database.module.ts
+│   │   │   ├── app.module.ts
+│   │   │   └── main.ts
+│   │   ├── test/                         # Test dosyaları
+│   │   ├── prisma/
+│   │   │   └── schema.prisma             # Veritabanı şeması
+│   │   ├── package.json
+│   │   ├── tsconfig.json
+│   │   └── nest-cli.json
+│   │
+│   └── client/                          # Next.js Frontend
+│       ├── src/
+│       │   ├── app/                     # App Router
+│       │   │   ├── (auth)/              # Auth sayfaları
+│       │   │   │   ├── login/
+│       │   │   │   └── register/
+│       │   │   ├── (dashboard)/        # Dashboard sayfaları
+│       │   │   │   ├── layout.tsx
+│       │   │   │   ├── page.tsx         # Ana dashboard
+│       │   │   │   ├── customers/       # Cari hesaplar
+│       │   │   │   ├── inventory/       # Stok yönetimi
+│       │   │   │   ├── invoices/        # Faturalar
+│       │   │   │   ├── accounting/      # Muhasebe
+│       │   │   │   ├── finance/         # Finans
+│       │   │   │   ├── hr/              # Personel
+│       │   │   │   └── reports/         # Raporlar
+│       │   │   ├── api/                 # API routes
+│       │   │   ├── layout.tsx
+│       │   │   └── globals.css
+│       │   ├── components/
+│       │   │   ├── ui/                  # Temel UI bileşenleri
+│       │   │   ├── forms/               # Form bileşenleri
+│       │   │   ├── tables/              # Tablo bileşenleri
+│       │   │   ├── charts/              # Grafik bileşenleri
+│       │   │   └── layout/              # Layout bileşenleri
+│       │   ├── lib/                     # Yardımcı fonksiyonlar
+│       │   │   ├── api.ts               # API çağrıları
+│       │   │   ├── utils.ts             # Yardımcı fonksiyonlar
+│       │   │   └── validators.ts        # Validasyon fonksiyonları
+│       │   ├── hooks/                   # Custom React hooks
+│       │   ├── types/                   # TypeScript tip tanımları
+│       │   └── store/                   # State management
+│       ├── public/                      # Statik dosyalar
+│       ├── prisma/
+│       │   └── schema.prisma            # Frontend için şema
+│       ├── package.json
+│       ├── tsconfig.json
+│       ├── tailwind.config.ts
+│       └── next.config.js
+│
+├── packages/
+│   └── shared/                          # Paylaşılan kodlar
+│       ├── types/                       # Ortak tipler
+│       ├── constants/                   # Ortak sabitler
+│       └── utils/                       # Ortak fonksiyonlar
+│
+├── .github/
+│   └── workflows/                       # CI/CD
+├── docker-compose.yml                   # Docker compose
+├── package.json                         # Root package.json
+├── tsconfig.json                        # Root tsconfig
+├── turbo.json                           # Turborepo config
+└── README.md</code></pre>
+        </div>
+
+        <h2>🗄️ 2. Veritabanı Şeması (Prisma Schema)</h2>
+        <div class="section">
+            <pre><code>// prisma/schema.prisma
+// Diji Muhasebe - Veritabanı Şeması
+// Türkiye Mevzuatına Uygun Muhasebe Sistemi
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// TENANT & ORGANIZATION (Çoklu Firma Desteği)
+// ============================================
+
+model Tenant {
+  id            String    @id @default(uuid())
+  name          String    // Firma adı
+  taxNumber     String?   // Vergi numarası
+  taxOffice     String?   // Vergi dairesi
+  address       String?
+  phone         String?
+  email         String?
+  logo          String?
+  isActive      Boolean   @default(true)
+  
+  // İlişkiler
+  users         TenantUser[]
+  accounts      AccountingAccount[]
+  currentAccounts CurrentAccount[]
+  inventory     Inventory[]
+  invoices      Invoice[]
+  slips         AccountingSlip[]
+  cashAccounts  CashAccount[]
+  bankAccounts  BankAccount[]
+  checks        Check[]
+  employees     Employee[]
+  products      Product[]
+  warehouses    Warehouse[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@map("tenants")
+}
+
+model TenantUser {
+  id        String   @id @default(uuid())
+  tenantId  String
+  userId    String
+  roleId    String
+  isActive  Boolean  @default(true)
+  
+  tenant    Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role     @relation(fields: [roleId], references: [id])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([tenantId, userId])
+  @@map("tenant_users")
+}
+
+// ============================================
+// AUTH & USERS (Kimlik Doğrulama)
+// ============================================
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  firstName     String
+  lastName      String
+  phone         String?
+  avatar        String?
+  isActive      Boolean   @default(true)
+  lastLogin     DateTime?
+  
+  // İlişkiler
+  tenantUsers   TenantUser[]
+  auditLogs     AuditLog[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@map("users")
+}
+
+model Role {
+  id            String    @id @default(uuid())
+  name          String    @unique // Admin, MuhasebeMuduru, Satici, Goruntuleyici
+  description   String?
+  permissions   Permission[]
+  tenantUsers   TenantUser[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@map("roles")
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  roleId      String
+  module      String   // current_account, inventory, invoice, accounting, finance, hr
+  action      String   // create, read, update, delete
+  resource    String   // specific resource identifier
+  
+  role        Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([roleId, module, action, resource])
+  @@map("permissions")
+}
+
+model AuditLog {
+  id            String    @id @default(uuid())
+  userId        String
+  tenantId      String?
+  action        String    // CREATE, UPDATE, DELETE, LOGIN, LOGOUT
+  module        String    // İşlem yapılan modül
+  resourceId    String?   // İşlem yapılan kaydın ID'si
+  oldValue      Json?     // Önceki değerler
+  newValue      Json?     // Yeni değerler
+  ipAddress     String?
+  userAgent     String?
+  description   String?
+  
+  user          User      @relation(fields: [userId], references: [id])
+  
+  createdAt     DateTime  @default(now())
+  
+  @@index([tenantId, createdAt])
+  @@index([userId, createdAt])
+  @@map("audit_logs")
+}
+
+// ============================================
+// CURRENT ACCOUNTS (Cari Hesaplar - CRM)
+// ============================================
+
+model CurrentAccount {
+  id              String    @id @default(uuid())
+  tenantId        String
+  code            String    // Cari kodu (örn: 120.001)
+  name            String    // Cari adı
+  type            CurrentAccountType // CUSTOMER, SUPPLIER, BOTH
+  taxNumber       String?   // Vergi/Vergi Kimlik Numarası
+  taxOffice       String?   // Vergi Dairesi
+  identityNumber  String?   // TC Kimlik Numarası
+  
+  // İletişim
+  email           String?
+  phone           String?
+  address         String?
+  city            String?
+  country         String?
+  
+  // Banka Bilgileri
+  iban            String?
+  bankName        String?
+  accountNumber   String?
+  
+  // Risk ve Limit
+  riskLimit       Decimal?  @default(0) @db.Decimal(15,2)
+  creditLimit     Decimal?  @default(0) @db.Decimal(15,2)
+  currentRisk     Decimal?  @default(0) @db.Decimal(15,2)
+  
+  // Grup ve Sektör
+  groupId         String?
+  sectorCode      String?
+  
+  // Varsayılan Değerler
+  defaultCurrency String    @default("TRY")
+  defaultPriceList String?
+  defaultWarehouse String?
+  
+  // Durum
+  isActive        Boolean   @default(true)
+  
+  // İlişkiler
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  group           CurrentAccountGroup? @relation(fields: [groupId], references: [id])
+  transactions    CurrentAccountTransaction[]
+  invoices        Invoice[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@unique([tenantId, code])
+  @@index([tenantId, type])
+  @@map("current_accounts")
+}
+
+model CurrentAccountGroup {
+  id          String   @id @default(uuid())
+  tenantId    String
+  name        String   // Grup adı
+  code        String   // Grup kodu
+  description String?
+  
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  accounts    CurrentAccount[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([tenantId, code])
+  @@map("current_account_groups")
+}
+
+model CurrentAccountTransaction {
+  id                  String    @id @default(uuid())
+  tenantId            String
+  currentAccountId    String
+  type                TransactionType // RECEIVABLE, PAYABLE
+  direction           TransactionDirection // IN, OUT
+  
+  amount              Decimal   @db.Decimal(15,4)
+  currency            String    @default("TRY")
+  exchangeRate        Decimal   @default(1) @db.Decimal(15,6)
+  amountTRY           Decimal   @db.Decimal(15,4) // TL karşılığı
+  
+  // Referans
+  invoiceId           String?
+  slipId              String?
+  checkId             String?
+  description         String?
+  
+  // Vade
+  dueDate             DateTime?
+  
+  // İlişkiler
+  tenant              Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  currentAccount      CurrentAccount @relation(fields: [currentAccountId], references: [id], onDelete: Cascade)
+  invoice             Invoice?  @relation(fields: [invoiceId], references: [id])
+  slip                AccountingSlip? @relation(fields: [slipId], references: [id])
+  check               Check?    @relation(fields: [checkId], references: [id])
+  
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  
+  @@index([tenantId, currentAccountId, dueDate])
+  @@map("current_account_transactions")
+}
+
+enum CurrentAccountType {
+  CUSTOMER  // Müşteri
+  SUPPLIER  // Tedarikçi
+  BOTH      // Hem Müşteri Hem Tedarikçi
+}
+
+enum TransactionType {
+  RECEIVABLE  // Alacak
+  PAYABLE     // Borç
+}
+
+enum TransactionDirection {
+  IN      // Giriş
+  OUT     // Çıkış
+}
+
+// ============================================
+// INVENTORY & STOCK (Stok Yönetimi)
+// ============================================
+
+model Warehouse {
+  id          String    @id @default(uuid())
+  tenantId    String
+  code        String    // Depo kodu
+  name        String    // Depo adı
+  address     String?
+  isActive    Boolean   @default(true)
+  isDefault   Boolean   @default(false)
+  
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  products    Inventory[]
+  movements   InventoryMovement[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@unique([tenantId, code])
+  @@map("warehouses")
+}
+
+model Product {
+  id              String    @id @default(uuid())
+  tenantId        String
+  code            String    // Ürün kodu
+  name            String    // Ürün adı
+  type            ProductType // GOODS, SERVICE, PRODUCTION
+  categoryId      String?
+  
+  // Birim
+  unitId          String?
+  secondaryUnitId String?
+  conversionRate  Decimal?  @default(1) @db.Decimal(10,4)
+  
+  // Barkod
+  barcode         String?
+  barcodeType     String?   // EAN13, CODE128, QR
+  
+  // Vergi
+  vatRate         Decimal   @default(0.20) @db.Decimal(5,4)
+  stopajRate      Decimal?  @default(0) @db.Decimal(5,4)
+  otvRate         Decimal?  @default(0) @db.Decimal(5,4)
+  
+  // Maliyet
+  costPrice       Decimal?  @db.Decimal(15,4)
+  salePrice       Decimal?  @db.Decimal(15,4)
+  minPrice        Decimal?  @db.Decimal(15,4)
+  maxPrice        Decimal?  @db.Decimal(15,4)
+  
+  // Kritik Seviye
+  minStockLevel   Decimal?  @default(0) @db.Decimal(15,4)
+  maxStockLevel  Decimal?  @db.Decimal(15,4)
+  
+  // Ağırlık ve Boyut
+  weight          Decimal?  @db.Decimal(10,3)
+  dimensions      String?   // LxWxH
+  
+  // Durum
+  isActive        Boolean   @default(true)
+  isVariant       Boolean   @default(false)
+  parentProductId String?
+  
+  // İlişkiler
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  category        ProductCategory? @relation(fields: [categoryId], references: [id])
+  unit            Unit?     @relation(fields: [unitId], references: [id])
+  parentProduct   Product?  @relation("ProductVariants", fields: [parentProductId], references: [id])
+  variants        Product[] @relation("ProductVariants")
+  inventory       Inventory[]
+  invoiceItems    InvoiceItem[]
+  movements       InventoryMovement[]
+  recipeItems     RecipeItem[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@unique([tenantId, code])
+  @@index([tenantId, type])
+  @@map("products")
+}
+
+model ProductCategory {
+  id          String   @id @default(uuid())
+  tenantId    String
+  name        String
+  code        String
+  parentId    String?
+  
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  parent      ProductCategory? @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    ProductCategory[] @relation("CategoryHierarchy")
+  products    Product[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([tenantId, code])
+  @@map("product_categories")
+}
+
+model Unit {
+  id          String   @id @default(uuid())
+  tenantId    String
+  code        String   // AD, KG, MT, KOLI
+  name        String   // Adet, Kilogram, Metre, Koli
+  isInteger   Boolean  @default(true) // Tam sayı mı?
+  
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  products    Product[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([tenantId, code])
+  @@map("units")
+}
+
+model Inventory {
+  id          String    @id @default(uuid())
+  tenantId    String
+  productId   String
+  warehouseId String
+  
+  quantity    Decimal   @default(0) @db.Decimal(15,4)
+  reservedQty Decimal   @default(0) @db.Decimal(15,4)
+  availableQty Decimal  @computed(() => 0) @db.Decimal(15,4) // quantity - reservedQty
+  
+  // Maliyet ( stok değerleme yöntemine göre )
+  avgCost     Decimal?  @db.Decimal(15,6)
+  fifoCost    Decimal?  @db.Decimal(15,6)
+  lifoCost    Decimal?  @db.Decimal(15,6)
+  
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  product     Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  warehouse   Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@unique([tenantId, productId, warehouseId])
+  @@map("inventories")
+}
+
+model InventoryMovement {
+  id            String    @id @default(uuid())
+  tenantId      String
+  productId     String
+  warehouseId   String
+  type          MovementType // ENTRY, OUTPUT, TRANSFER, COUNT
+  
+  quantity      Decimal   @db.Decimal(15,4)
+  unitPrice     Decimal   @db.Decimal(15,6)
+  totalPrice   Decimal   @db.Decimal(15,4)
+  currency      String    @default("TRY")
+  
+  // Referans
+  invoiceId     String?
+  slipId        String?
+  recipeId      String?
+  toWarehouseId String?   // Transfer için
+  
+  // Açıklama
+  description   String?
+  
+  // Stok öncesi ve sonrası
+  quantityBefore Decimal  @db.Decimal(15,4)
+  quantityAfter  Decimal  @db.Decimal(15,4)
+  
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  product       Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  warehouse     Warehouse @relation(fields: [warehouseId], references: [id])
+  toWarehouse   Warehouse? @relation("WarehouseTransfers", fields: [toWarehouseId], references: [id])
+  invoice       Invoice?  @relation(fields: [invoiceId], references: [id])
+  slip          AccountingSlip? @relation(fields: [slipId], references: [id])
+  
+  movementDate  DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@index([tenantId, productId, movementDate])
+  @@map("inventory_movements")
+}
+
+enum ProductType {
+  GOODS       // Mal
+  SERVICE     // Hizmet
+  PRODUCTION  // Üretim
+}
+
+enum MovementType {
+  ENTRY      // Giriş
+  OUTPUT     // Çıkış
+  TRANSFER   // Transfer
+  COUNT      // Sayım
+}
+
+// ============================================
+// INVOICES (Fatura Yönetimi)
+// ============================================
+
+model Invoice {
+  id                String    @id @default(uuid())
+  tenantId          String
+  invoiceType       InvoiceType // SALES, PURCHASE, RETURN
+  invoiceSubType    InvoiceSubType? // INVOICE, PROFORMA, ESTIMATE
+  
+  invoiceNumber     String    // Fatura numarası
+  serialNumber      String?   // Seri numarası
+  
+  date              DateTime  // Fatura tarihi
+  dueDate           DateTime? // Vade tarihi
+  
+  // Cari Hesap
+  currentAccountId  String
+  currentAccount    CurrentAccount @relation(fields: [currentAccountId], references: [id])
+  
+  // Para Birimi
+  currency          String    @default("TRY")
+  exchangeRate      Decimal   @default(1) @db.Decimal(15,6)
+  
+  // İskonto
+  discountType      DiscountType? // AMOUNT, PERCENTAGE
+  discountRate      Decimal?     @db.Decimal(5,4)
+  discountAmount    Decimal?     @db.Decimal(15,4)
+  
+  // Vergi
+  vatRate           Decimal   @default(0.20) @db.Decimal(5,4)
+  vatAmount         Decimal   @default(0)   @db.Decimal(15,4)
+  stopajAmount      Decimal?  @db.Decimal(15,4)
+  otvAmount         Decimal?  @db.Decimal(15,4)
+  
+  // Tevkifat
+  hasWithholding    Boolean   @default(false)
+  withholdingRate   Decimal?  @db.Decimal(5,4)
+  withholdingAmount Decimal?  @db.Decimal(15,4)
+  
+  // Toplamlar
+  subtotal          Decimal   @db.Decimal(15,4) // Ara toplam
+  total             Decimal   @db.Decimal(15,4) // Genel toplam
+  paidAmount        Decimal   @default(0) @db.Decimal(15,4)
+  remainingAmount   Decimal   @db.Decimal(15,4)
+  
+  // Durum
+  status            InvoiceStatus @default(DRAFT)
+  
+  // e-Fatura
+  isEFatura         Boolean   @default(false)
+  eFaturaStatus    EFaturaStatus? // SENT, DELIVERED, REJECTED
+  eFaturaId        String?
+  
+  // İrsaliye
+  dispatchId        String?
+  
+  // Açıklama
+  note              String?
+  terms             String?
+  
+  // İlişkiler
+  tenant            Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  items             InvoiceItem[]
+  payments          InvoicePayment[]
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@unique([tenantId, invoiceNumber])
+  @@index([tenantId, date])
+  @@index([tenantId, currentAccountId])
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id            String    @id @default(uuid())
+  invoiceId     String
+  productId     String?
+  productName   String    // Ürün adı (maddede sakla)
+  
+  // Miktar ve Birim
+  quantity      Decimal   @db.Decimal(15,4)
+  unitId        String?
+  unitPrice     Decimal   @db.Decimal(15,6)
+  discountRate  Decimal?  @db.Decimal(5,4)
+  discountAmount Decimal? @db.Decimal(15,4)
+  
+  // Vergi
+  vatRate       Decimal   @db.Decimal(5,4)
+  vatAmount     Decimal   @db.Decimal(15,4)
+  
+  // Tevkifat
+  withholdingRate  Decimal? @db.Decimal(5,4)
+  withholdingAmount Decimal? @db.Decimal(15,4)
+  
+  // ÖTV
+  otvRate       Decimal?  @db.Decimal(5,4)
+  otvAmount     Decimal?  @db.Decimal(15,4)
+  
+  // Toplam
+  subtotal      Decimal   @db.Decimal(15,4) // quantity * unitPrice - discount
+  total         Decimal   @db.Decimal(15,4) // subtotal + vat + otv
+  
+  // Maliyet (satış maliyeti için)
+  costPrice     Decimal?  @db.Decimal(15,6)
+  
+  invoice       Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  product       Product?   @relation(fields: [productId], references: [id])
+  unit          Unit?      @relation(fields: [unitId], references: [id])
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@map("invoice_items")
+}
+
+model InvoicePayment {
+  id              String    @id @default(uuid())
+  invoiceId       String
+  date            DateTime
+  
+  amount          Decimal   @db.Decimal(15,4)
+  currency        String    @default("TRY")
+  exchangeRate    Decimal   @default(1) @db.Decimal(15,6)
+  
+  paymentType     PaymentType // CASH, BANK, CHECK, CREDIT_CARD
+  
+  // Banka/Kasa
+  cashAccountId  String?
+  bankAccountId  String?
+  posAccountId   String?
+  
+  // Çek/Senet
+  checkId         String?
+  
+  // Açıklama
+  description    String?
+  
+  invoice        Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  
+  @@map("invoice_payments")
+}
+
+enum InvoiceType {
+  SALES     // Satış Faturası
+  PURCHASE  // Alış Faturası
+  RETURN    // İade Faturası
+}
+
+enum InvoiceSubType {
+  INVOICE   // Normal Fatura
+  PROFORMA  // Proforma Fatura
+  ESTIMATE  // Teklif
+}
+
+enum InvoiceStatus {
+  DRAFT       // Taslak
+  APPROVED    // Onaylandı
+  SENT        // Gönderildi
+  PAID        // Ödendi
+  PARTIAL    // Kısmi Ödeme
+  CANCELLED  // İptal
+  OVERDUE    // Vadesi Geçmiş
+}
+
+enum DiscountType {
+  AMOUNT       // Tutar
+  PERCENTAGE  // Yüzde
+}
+
+enum PaymentType {
+  CASH         // Nakit
+  BANK        // Banka/Havale
+  CHECK       // Çek
+  CREDIT_CARD // Kredi Kartı
+}
+
+enum EFaturaStatus {
+  DRAFT       // Taslak
+  SENT        // Gönderildi
+  DELIVERED   // Teslim Edildi
+  REJECTED    // Reddedildi
+  ERROR       // Hata
+}
+
+// ============================================
+// ACCOUNTING (Genel Muhasebe - TDHP)
+// ============================================
+
+model AccountingAccount {
+  id            String    @id @default(uuid())
+  tenantId      String
+  code          String    // 100, 100.01, 100.01.001
+  name          String    // Hesap adı
+  type          AccountType // ACTIVE, PASSIVE, LOSS, PROFIT
+  group         String    // Ana grup (1, 2, 3, 4, 5, 6, 7, 8, 9)
+  
+  // Hiyerarşi
+  parentId      String?
+  level         Int       @default(1) // 1: Ana hesap, 2: Alt hesap, 3: Detaylı
+  
+  // Özellikler
+  isActive      Boolean   @default(true)
+  isSummary     Boolean   @default(false) // Özet hesap mı?
+  isBank       Boolean   @default(false)
+  isCash       Boolean   @default(false)
+  
+  // KDV Hesapları
+  kdvType       KdvType?  // KDV1, KDV2, KDV3, KDV4
+  kdvRate       Decimal?  @db.Decimal(5,4)
+  
+  // İlişkiler
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  parent        AccountingAccount? @relation("AccountHierarchy", fields: [parentId], references: [id])
+  children      AccountingAccount[] @relation("AccountHierarchy")
+  slips         AccountingSlipLine[]
+  products      Product[] // Gelir/Gider hesapları için
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@unique([tenantId, code])
+  @@index([tenantId, group])
+  @@map("accounting_accounts")
+}
+
+model AccountingSlip {
+  id            String    @id @default(uuid())
+  tenantId      String
+  slipNumber    String    // Fiş numarası
+  date          DateTime  // Fiş tarihi
+  type          SlipType  // MAHSUP, TAHSİL, TEDİYE
+  
+  // Toplamlar
+  totalDebit    Decimal   @db.Decimal(15,4)
+  totalCredit   Decimal   @db.Decimal(15,4)
+  
+  // Durum
+  status        SlipStatus @default(APPROVED)
+  
+  // Açıklama
+  description   String?
+  
+  // Kaynak (Otomatik oluşturulduysa)
+  sourceModule  String?   // invoice, payment, inventory
+  sourceId      String?
+  
+  // İlişkiler
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  lines         AccountingSlipLine[]
+  transactions  CurrentAccountTransaction[]
+  movements     InventoryMovement[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@unique([tenantId, slipNumber])
+  @@index([tenantId, date])
+  @@map("accounting_slips")
+}
+
+model AccountingSlipLine {
+  id            String    @id @default(uuid())
+  slipId        String
+  accountId     String
+  
+  // Borç/Alacak
+  debit         Decimal   @default(0) @db.Decimal(15,4)
+  credit        Decimal   @default(0) @db.Decimal(15,4)
+  
+  // Para Birimi
+  currency      String    @default("TRY")
+  exchangeRate  Decimal   @default(1) @db.Decimal(15,6)
+  debitTRY      Decimal   @db.Decimal(15,4)
+  creditTRY    Decimal   @db.Decimal(15,4)
+  
+  // Açıklama
+  description   String?
+  
+  // Referans
+  currentAccountId String?
+  productId     String?
+  invoiceId     String?
+  
+  slip          AccountingSlip @relation(fields: [slipId], references: [id], onDelete: Cascade)
+  account       AccountingAccount @relation(fields: [accountId], references: [id])
+  currentAccount CurrentAccount? @relation(fields: [currentAccountId], references: [id])
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@map("accounting_slip_lines")
+}
+
+enum AccountType {
+  ACTIVE    // Aktif (Varlık)
+  PASSIVE   // Pasif (Kaynak)
+  LOSS      // Gider
+  PROFIT    // Gelir
+}
+
+enum SlipType {
+  MAHSUP    // Mahsup Fişi
+  TAHSİL    // Tahsil Fişi
+  TEDİYE    // Tediye Fişi
+}
+
+enum SlipStatus {
+  DRAFT     // Taslak
+  APPROVED  // Onaylandı
+  CANCELLED // İptal Edildi
+}
+
+enum KdvType {
+  KDV1      // Satış KDV'si (%20)
+  KDV2      // Satış KDV'si (%10)
+  KDV3      // Satış KDV'si (%1)
+  KDV4      // Satış KDV'si (%0)
+  KDV5      // Alış KDV'si (%20)
+  KDV6      // Alış KDV'si (%10)
+  KDV7      // Alış KDV'si (%1)
+  KDV8      // Alış KDV'si (%0)
+  KDV9      // İade KDV
+}
+
+// ============================================
+// FINANCE (Kasa ve Banka)
+// ============================================
+
+model CashAccount {
+  id          String    @id @default(uuid())
+  tenantId    String
+  code        String
+  name        String
+  currency    String    @default("TRY")
+  description String?
+  isActive    Boolean   @default(true)
+  
+  // Başlangıç bakiyesi
+  openingBalance Decimal @default(0) @db.Decimal(15,4)
+  
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  transactions CashTransaction[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@unique([tenantId, code])
+  @@map("cash_accounts")
+}
+
+model CashTransaction {
+  id            String    @id @default(uuid())
+  tenantId      String
+  cashAccountId String
+  type          CashTransactionType // DEPOSIT, WITHDRAWAL
+  
+  amount        Decimal   @db.Decimal(15,4)
+  currency      String    @default("TRY")
+  exchangeRate  Decimal   @default(1) @db.Decimal(15,6)
+  amountTRY    Decimal   @db.Decimal(15,4)
+  
+  date          DateTime
+  description   String?
+  
+  // Referans
+  currentAccountId String?
+  invoiceId    String?
+  checkId      String?
+  
+  // Belge
+  receiptNumber String?
+  documentId   String?
+  
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  cashAccount   CashAccount @relation(fields: [cashAccountId], references: [id], onDelete: Cascade)
+  currentAccount CurrentAccount? @relation(fields: [currentAccountId], references: [id])
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@index([tenantId, cashAccountId, date])
+  @@map("cash_transactions")
+}
+
+enum CashTransactionType {
+  DEPOSIT     // Para Girişi (Tahsilat)
+  WITHDRAWAL  // Para Çıkışı (Tediye)
+}
+
+model BankAccount {
+  id            String    @id @default(uuid())
+  tenantId      String
+  code          String
+  name          String
+  bankName      String
+  branchName    String?
+  accountNumber String
+  iban          String?
+  currency      String    @default("TRY")
+  accountType   BankAccountType // CHECKING, DEPOSIT, CREDIT
+  
+  isActive      Boolean   @default(true)
+  openingBalance Decimal  @default(0) @db.Decimal(15,4)
+  
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  transactions  BankTransaction[]
+  posAccounts   PosAccount[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@unique([tenantId, code])
+  @@map("bank_accounts")
+}
+
+model BankTransaction {
+  id              String    @id @default(uuid())
+  tenantId        String
+  bankAccountId   String
+  type            BankTransactionType // DEPOSIT, WITHDRAWAL, TRANSFER
+  
+  amount          Decimal   @db.Decimal(15,4)
+  currency        String    @default("TRY")
+  exchangeRate    Decimal   @default(1) @db.Decimal(15,6)
+  amountTRY      Decimal   @db.Decimal(15,4)
+  
+  date            DateTime
+  valueDate       DateTime? // Valör tarihi
+  
+  // Detaylar
+  description     String?
+  counterParty    String?   // Karşı taraf (havale için)
+  referenceNo     String?    // Referans numarası
+  
+  // Belge
+  documentId      String?
+  
+  // İlişki
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  bankAccount     BankAccount @relation(fields: [bankAccountId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([tenantId, bankAccountId, date])
+  @@map("bank_transactions")
+}
+
+enum BankAccountType {
+  CHECKING  // Vadesiz
+  DEPOSIT   // Vadeli
+  CREDIT    // Kredi
+}
+
+enum BankTransactionType {
+  DEPOSIT   // Para Girişi
+  WITHDRAWAL // Para Çıkışı
+  TRANSFER  // Transfer
+}
+
+model PosAccount {
+  id            String    @id @default(uuid())
+  tenantId      String
+  bankAccountId String
+  name          String    // Banka POS hesabı adı
+  commissionRate Decimal  @default(0) @db.Decimal(5,4) // Komisyon oranı
+  
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  bankAccount   BankAccount @relation(fields: [bankAccountId], references: [id])
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@map("pos_accounts")
+}
+
+// ============================================
+// CHECKS & NOTES (Çek ve Senet)
+// ============================================
+
+model Check {
+  id              String    @id @default(uuid())
+  tenantId        String
+  type            CheckType // CHECK, PROMISSORY
+  
+  checkNumber     String    // Çek/Senet numarası
+  bankCode        String?   // Banka kodu
+  branchCode      String?   // Şube kodu
+  
+  // Tutarlar
+  amount          Decimal   @db.Decimal(15,4)
+  currency        String    @default("TRY")
+  
+  // Tarihler
+  issueDate       DateTime  // Düzenleme tarihi
+  dueDate         DateTime  // Vade tarihi
+  collectionDate  DateTime? // Tahsil tarihi
+  
+  // Durumlar
+  status          CheckStatus // PORTFOLIO, COLLECTION, ENDORSED, RETURNED, PROTESTED
+  collectionType  CollectionType? // NORMAL, EARLY
+  
+  // Veren/Ciro Eden
+  drawer          String?   // Çeki veren (düşünülen kişi)
+  endorser        String?   // Ciro eden
+  beneficiary     String?   // Lehtar (çekin sahibi)
+  
+  // Açıklama
+  description     String?
+  
+  // İlişkiler
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  currentAccount  CurrentAccount? @relation(fields: [currentAccountId], references: [id])
+  currentAccountId String?
+  
+  // Banka/Kasa
+  bankAccountId   String?
+  cashAccountId   String?
+  
+  // Transactions
+  transactions    CurrentAccountTransaction[]
+  cashTransactions CashTransaction[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([tenantId, status, dueDate])
+  @@map("checks")
+}
+
+enum CheckType {
+  CHECK        // Çek
+  PROMISSORY   // Senet
+}
+
+enum CheckStatus {
+  PORTFOLIO    // Portföyde
+  COLLECTION   // Tahsilde
+  ENDORSED     // Ciro Edildi
+  RETURNED     // İade Edildi (Karşılıksız)
+  PROTESTED    // Protestolu
+  PAID         // Ödendi
+}
+
+enum CollectionType {
+  NORMAL  // Normal tahsil
+  EARLY   // Erken tahsil (iskonto)
+}
+
+// ============================================
+// HR & PAYROLL (İnsan Kaynakları ve Bordro)
+// ============================================
+
+model Employee {
+  id              String    @id @default(uuid())
+  tenantId        String
+  
+  // Kişisel Bilgiler
+  firstName       String
+  lastName        String
+  identityNumber  String?   // TC Kimlik Numarası
+  gender          Gender?
+  birthDate       DateTime?
+  
+  // İletişim
+  email           String?
+  phone           String?
+  address         String?
+  
+  // İş Bilgileri
+  employeeNumber  String?   // Sicil numarası
+  department      String?
+  position        String?
+  startDate       DateTime
+  endDate         DateTime?
+  
+  // Maaş
+  salary          Decimal?  @db.Decimal(15,4)
+  salaryType      SalaryType? // MONTHLY, DAILY, HOURLY
+  currency        String    @default("TRY")
+  
+  // SGK
+  sgkNumber       String?
+  sgkStatus       SgkStatus?
+  
+  // Vergi
+  taxBracket      String?
+  agiAmount       Decimal?  @db.Decimal(15,4) // Asgari Geçim İndirimi
+  
+  // Durum
+  status          EmployeeStatus @default(ACTIVE)
+  
+  // İlişkiler
+  tenant          Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  payrolls        Payroll[]
+  advances        EmployeeAdvance[]
+  leaves          Leave[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@unique([tenantId, employeeNumber])
+  @@map("employees")
+}
+
+model Payroll {
+  id            String    @id @default(uuid())
+  tenantId      String
+  employeeId    String
+  period        String    // 2024-01, 2024-02
+  
+  // Çalışma Günleri
+  workDays      Int       @default(0)
+  actualWorkDays Int      @default(0)
+  
+  // Kazançlar
+  grossSalary   Decimal   @db.Decimal(15,4) // Brüt maaş
+  agi           Decimal?  @db.Decimal(15,4) // Asgari geçim indirimi
+  bonus         Decimal?  @db.Decimal(15,4) // Prim/ikramiye
+  overtime      Decimal?  @db.Decimal(15,4) // Fazla çalışma
+  otherEarnings Decimal?  @db.Decimal(15,4) // Diğer kazançlar
+  
+  // Kesintiler
+  sgkPremium    Decimal   @db.Decimal(15,4) // SGK primi (işçi payı)
+  unemployment  Decimal   @db.Decimal(15,4) // İşsizlik sigortası
+  incomeTax     Decimal   @db.Decimal(15,4) // Gelir vergisi
+  stampDuty     Decimal?  @db.Decimal(15,4) // Damga vergisi
+  otherDeductions Decimal? @db.Decimal(15,4) // Diğer kesintiler
+  
+  // Net
+  netSalary     Decimal   @db.Decimal(15,4)
+  
+  // SGK İşveren
+  employerSgk   Decimal?  @db.Decimal(15,4) // SGK işveren payı
+  
+  // Durum
+  status        PayrollStatus @default(CALCULATED)
+  
+  // İlişkiler
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  employee      Employee  @relation(fields: [employeeId], references: [id])
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@unique([tenantId, employeeId, period])
+  @@map("payrolls")
+}
+
+model EmployeeAdvance {
+  id          String    @id @default(uuid())
+  tenantId    String
+  employeeId  String
+  
+  amount      Decimal   @db.Decimal(15,4)
+  currency    String    @default("TRY")
+  type        AdvanceType // SALARY, PERSONAL
+  
+  requestDate DateTime
+  approvalDate DateTime?
+  dueDate     DateTime?
+  
+  status      AdvanceStatus // REQUESTED, APPROVED, REJECTED, PAID
+  
+  description String?
+  
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("employee_advances")
+}
+
+model Leave {
+  id          String    @id @default(uuid())
+  tenantId    String
+  employeeId  String
+  type        LeaveType // ANNUAL, SICK, UNPAID, MATERNITY
+  
+  startDate   DateTime
+  endDate     DateTime
+  days        Int
+  
+  reason      String?
+  status      LeaveStatus // REQUESTED, APPROVED, REJECTED
+  
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("leaves")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum SalaryType {
+  MONTHLY  // Aylık
+  DAILY    // Günlük
+  HOURLY   // Saatlik
+}
+
+enum SgkStatus {
+  ACTIVE
+  PASSIVE
+  TERMINATED
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  INACTIVE
+  TERMINATED
+}
+
+enum PayrollStatus {
+  DRAFT
+  CALCULATED
+  APPROVED
+  PAID
+}
+
+enum AdvanceType {
+  SALARY    // Maaş avansı
+  PERSONAL  // Kişisel avans
+}
+
+enum AdvanceStatus {
+  REQUESTED  // Talep edildi
+  APPROVED   // Onaylandı
+  REJECTED  // Reddedildi
+  PAID       // Ödendi
+}
+
+enum LeaveType {
+  ANNUAL   // Yıllık izin
+  SICK     // Hastalık izni
+  UNPAID   // Ücretsiz izin
+  MATERNITY // Doğum izni
+}
+
+enum LeaveStatus {
+  REQUESTED
+  APPROVED
+  REJECTED
+}
+
+// ============================================
+// PRODUCTION (Üretim Modülü)
+// ============================================
+
+model Recipe {
+  id          String    @id @default(uuid())
+  tenantId    String
+  productId   String    // Mamül ürün
+  
+  name        String
+  code        String
+  quantity    Decimal   @db.Decimal(15,4) // Üretilecek miktar
+  unitId      String?
+  
+  isActive    Boolean   @default(true)
+  
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  product     Product   @relation(fields: [productId], references: [id])
+  items       RecipeItem[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@unique([tenantId, code])
+  @@map("recipes")
+}
+
+model RecipeItem {
+  id          String    @id @default(uuid())
+  recipeId    String
+  productId   String    // Hammadde
+  
+  quantity    Decimal   @db.Decimal(15,4)
+  unitId      String?
+  
+  recipe      Recipe    @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  product     Product   @relation(fields: [productId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("recipe_items")
+}
+
+model Production {
+  id          String    @id @default(uuid())
+  tenantId    String
+  recipeId    String
+  
+  quantity    Decimal   @db.Decimal(15,4)
+  startDate   DateTime
+  endDate     DateTime?
+  
+  status      ProductionStatus // PLANNED, IN_PROGRESS, COMPLETED, CANCELLED
+  
+  description String?
+  
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  recipe      Recipe    @relation(fields: [recipeId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  @@map("productions")
+}
+
+enum ProductionStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+// ============================================
+// FIXED ASSETS (Demirbaş/Sabit Kıymetler)
+// ============================================
+
+model FixedAsset {
+  id            String    @id @default(uuid())
+  tenantId      String
+  
+  code          String    // Demirbaş numarası
+  name          String
+  category      String?   // Bilgisayar, Mobilya, Araç
+  
+  // Maliyet
+  purchaseDate  DateTime
+  purchasePrice Decimal   @db.Decimal(15,4)
+  vatAmount     Decimal?  @db.Decimal(15,4)
+  
+  // Amortisman
+  usefulLife    Int       @default(5) // Kullanım süresi (yıl)
+  salvageValue  Decimal?  @db.Decimal(15,4) // Artık değer
+  depreciationMethod DepreciationMethod @default(STRAIGHT_LINE)
+  
+  // Durum
+  status        AssetStatus // IN_USE, MAINTENANCE, DISPOSED
+  
+  description   String?
+  
+  tenant        Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  depreciations FixedAssetDepreciation[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@unique([tenantId, code])
+  @@map("fixed_assets")
+}
+
+model FixedAssetDepreciation {
+  id            String    @id @default(uuid())
+  assetId       String
+  year          Int       // Yıl
+  month         Int?      // Ay
+  
+  depreciation  Decimal   @db.Decimal(15,4)
+  accumulated   Decimal   @db.Decimal(15,4)
+  netValue      Decimal   @db.Decimal(15,4)
+  
+  asset         FixedAsset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime  @default(now())
+  
+  @@unique([assetId, year, month])
+  @@map("fixed_asset_depreciations")
+}
+
+enum DepreciationMethod {
+  STRAIGHT_LINE     // Doğrusal
+  DECLINING_BALANCE // Azalan bakiye
+}
+
+enum AssetStatus {
+  IN_USE
+  MAINTENANCE
+  DISPOSED
+}
+
+// ============================================
+// NOTIFICATIONS (Bildirim Sistemi)
+// ============================================
+
+model Notification {
+  id          String    @id @default(uuid())
+  tenantId    String?
+  userId      String?
+  
+  type        NotificationType
+  title       String
+  message     String
+  
+  isRead      Boolean   @default(false)
+  readAt      DateTime?
+  
+  // Action
+  actionUrl   String?
+  actionLabel String?
+  
+  // Zamanlama
+  scheduledFor DateTime?
+  sentAt      DateTime?
+  
+  createdAt   DateTime  @default(now())
+  
+  @@index([userId, isRead])
+  @@map("notifications")
+}
+
+enum NotificationType {
+  PAYMENT_DUE      // Ödeme hatırlatması
+  INVOICE_APPROVAL // Fatura onayı
+  LOW_STOCK        // Kritik stok
+  CHECK_DUE        // Çek/Senet vadesi
+  PAYROLL          // Bordro
+  SYSTEM           // Sistem bildirimi
+}
+
+// ============================================
+// EXCHANGE RATES (Döviz Kurları)
+// ============================================
+
+model ExchangeRate {
+  id          String    @id @default(uuid())
+  tenantId    String
+  
+  currency    String    // USD, EUR, GBP
+  rate        Decimal   @db.Decimal(15,6) // 1 birim TL karşılığı
+  rateType    RateType  // BUY, SELL, CENTRAL
+  
+  date        DateTime
+  
+  tenant      Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+  
+  @@unique([tenantId, currency, date])
+  @@map("exchange_rates")
+}
+
+enum RateType {
+  BUY     // Alış
+  SELL    // Satış
+  CENTRAL // Merkez Bankası
+}
+
+// ============================================
+// SETTINGS (Sistem Ayarları)
+// ============================================
+
+model Setting {
+  id          String   @id @default(uuid())
+  tenantId    String
+  key         String
+  value       Json
+  
+  tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([tenantId, key])
+  @@map("settings")
+}</code></pre>
+        </div>
+
+        <h2>⚙️ 3. Backend Kurulum Dosyaları</h2>
+        
+        <h3>3.1 package.json (Backend)</h3>
+        <div class="section">
+            <pre><code>{
+  "name": "diji-muhasebe-api",
+  "version": "1.0.0",
+  "description": "Diji Muhasebe Backend API",
+  "author": "Diji Muhasebe",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:push": "prisma db push",
+    "prisma:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.3.0",
+    "@nestjs/config": "^3.1.1",
+    "@nestjs/core": "^10.3.0",
+    "@nestjs/jwt": "^10.2.0",
+    "@nestjs/passport": "^10.0.3",
+    "@nestjs/platform-express": "^10.3.0",
+    "@nestjs/swagger": "^7.2.0",
+    "@prisma/client": "^5.8.0",
+    "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
+    "passport-local": "^1.0.0",
+    "reflect-metadata": "^0.2.1",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^10.3.0",
+    "@nestjs/schematics": "^10.1.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.0",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/passport-local": "^1.0.38",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "prisma": "^5.8.0",
+    "source-map-support": "^0.5.21",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.3.3"
+  }
+}</code></pre>
+        </div>
+
+        <h3>3.2 main.ts (Backend Entry Point)</h3>
+        <div class="section">
+            <pre><code>/**
+ * Diji Muhasebe - Backend Ana Giriş Noktası
+ * NestJS Application Bootstrap
+ */
+
+import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { AppModule } from './app.module';
+
+/**
+ * Uygulama başlangıç fonksiyonu
+ * - Validation pipe konfigürasyonu
+ * - Swagger API dokümantasyonu
+ * - CORS ayarları
+ */
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  // Global validation pipe - DTO validasyonları için
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Sadece DTO'da tanımlı alanları kabul et
+      forbidNonWhitelisted: true, // Tanımlanmamış alan varsa hata fırlat
+      transform: true, // Verileri otomatik tip dönüşümü yap
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
+
+  // Swagger API Dokümantasyonu
+  const config = new DocumentBuilder()
+    .setTitle('Diji Muhasebe API')
+    .setDescription('Türkiye Mevzuatına Uygun Muhasebe Sistemi API')
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'JWT Token ile giriş yapın',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
+    .addTag('auth', 'Kimlik Doğrulama İşlemleri')
+    .addTag('users', 'Kullanıcı Yönetimi')
+    .addTag('current-accounts', 'Cari Hesaplar')
+    .addTag('inventory', 'Stok Yönetimi')
+    .addTag('invoices', 'Fatura İşlemleri')
+    .addTag('accounting', 'Genel Muhasebe')
+    .addTag('finance', 'Kasa ve Banka')
+    .addTag('checks', 'Çek ve Senet')
+    .addTag('hr', 'İnsan Kaynakları')
+    .addTag('reports', 'Raporlama')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
+
+  // CORS konfigürasyonu
+  app.enableCors({
+    origin: process.env.CLIENT_URL || 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    credentials: true,
+  });
+
+  // Global prefix - Tüm route'lar /api ile başlar
+  app.setGlobalPrefix('api');
+
+  const port = process.env.PORT || 4000;
+  await app.listen(port);
+  
+  console.log(`🚀 Diji Muhasebe API: http://localhost:${port}`);
+  console.log(`📚 API Dokümantasyonu: http://localhost:${port}/api/docs`);
+}
+
+bootstrap();</code></pre>
+        </div>
+
+        <h3>3.3 app.module.ts (Ana Modül)</h3>
+        <div class="section">
+            <pre><code>/**
+ * Diji Muhasebe - Ana Uygulama Modülü
+ * Tüm modüllerin bir araya getirildiği merkezi modül
+ */
+
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+
+// Database
+import { DatabaseModule } from './database/database.module';
+
+// Modules
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { TenantModule } from './modules/tenant/tenant.module';
+import { CurrentAccountModule } from './modules/current-account/current-account.module';
+import { InventoryModule } from './modules/inventory/inventory.module';
+import { InvoiceModule } from './modules/invoice/invoice.module';
+import { AccountingModule } from './modules/accounting/accounting.module';
+import { FinanceModule } from './modules/finance/finance.module';
+import { ChecksModule } from './modules/checks/checks.module';
+import { HrModule } from './modules/hr/hr.module';
+import { ReportsModule } from './modules/reports/reports.module';
+
+@Module({
+  imports: [
+    // Environment Configuration
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+
+    // Passport Module
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+
+    // JWT Module
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get('JWT_SECRET') || 'diji-muhasebe-secret-key',
+        signOptions: {
+          expiresIn: configService.get('JWT_EXPIRES_IN') || '7d',
+        },
+      }),
+      inject: [ConfigService],
+    }),
+
+    // Database
+    DatabaseModule,
+
+    // Application Modules
+    AuthModule,
+    UsersModule,
+    TenantModule,
+    CurrentAccountModule,
+    InventoryModule,
+    InvoiceModule,
+    AccountingModule,
+    FinanceModule,
+    ChecksModule,
+    HrModule,
+    ReportsModule,
+  ],
+  controllers: [],
+  providers: [],
+})
+export class AppModule {}</code></pre>
+        </div>
+
+        <h3>3.4 .env Dosyası</h3>
+        <div class="section">
+            <pre><code># ========================================
+# Diji Muhasebe - Environment Configuration
+# ========================================
+
+# Database
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/diji_muhasebe?schema=public"
+
+# JWT
+JWT_SECRET="diji-muhasebe-super-secret-key-change-in-production"
+JWT_EXPIRES_IN="7d"
+
+# Server
+PORT=4000
+NODE_ENV="development"
+
+# Client (Frontend)
+CLIENT_URL="http://localhost:3000"
+
+# Authentication
+BCRYPT_ROUNDS=10
+
+# File Upload
+UPLOAD_DIR="./uploads"
+MAX_FILE_SIZE=10485760
+
+# Email (SMTP)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT=587
+SMTP_USER=""
+SMTP_PASS=""
+
+# TCMB Exchange Rates API
+TCMB_API_URL="https://api.tcmb.gov.tr"
+
+# e-Fatura Entegrator
+EFATURA_ENABLED=false
+EFATURA_USERNAME=""
+EFATURA_PASSWORD=""
+EFATURA_ENDPOINT=""</code></pre>
+        </div>
+
+        <h3>3.5 Auth Modülü (JWT Strategy)</h3>
+        <div class="section">
+            <pre><code>/**
+ * JWT Strategy - Token Doğrulama
+ * NextAuth.js yerine backend-side JWT kullanımı
+ */
+
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { PassportStrategy } from '@nestjs/passport';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { ConfigService } from '@nestjs/config';
+import { PrismaService } from '../database/prisma.service';
+
+export interface JwtPayload {
+  sub: string; // userId
+  email: string;
+  tenantId?: string;
+  roles: string[];
+}
+
+@Injectable()
+export class JwtStrategy extends PassportStrategy(Strategy) {
+  constructor(
+    private configService: ConfigService,
+    private prisma: PrismaService,
+  ) {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
+      secretOrKey: configService.get('JWT_SECRET') || 'diji-muhasebe-secret-key',
+    });
+  }
+
+  /**
+   * Token doğrulandıktan sonra kullanıcı bilgilerini al
+   * - Kullanıcının aktif olup olmadığını kontrol et
+   * - Tenant bilgisini ekle
+   * - Rollerini ekle
+   */
+  async validate(payload: JwtPayload) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: payload.sub },
+      include: {
+        tenantUsers: {
+          include: {
+            role: true,
+            tenant: true,
+          },
+        },
+      },
+    });
+
+    if (!user || !user.isActive) {
+      throw new UnauthorizedException('Kullanıcı bulunamadı veya pasif');
+    }
+
+    // İlk tenant'ı varsayılan olarak kullan
+    const tenantUser = user.tenantUsers.find((tu) => tu.isActive) || user.tenantUsers[0];
+
+    return {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      tenantId: tenantUser?.tenantId,
+      tenantName: tenantUser?.tenant?.name,
+      role: tenantUser?.role?.name,
+      permissions: [], // TODO: Role'den permissions'ları al
+    };
+  }
+}</code></pre>
+        </div>
+
+        <h3>3.6 Auth Service</h3>
+        <div class="section">
+            <pre><code>/**
+ * Auth Service - Kimlik Doğrulama İşlemleri
+ * - Kayıt olma
+ * - Giriş yapma
+ * - Token yenileme
+ */
+
+import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { PrismaService } from '../../database/prisma.service';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
+
+@Injectable()
+export class AuthService {
+  constructor(
+    private prisma: PrismaService,
+    private jwtService: JwtService,
+  ) {}
+
+  /**
+   * Kullanıcı kayıt olma
+   * - Email kontrolü
+   * - Şifre hashleme
+   * - Varsayılan tenant oluşturma (tek kişilik)
+   * - Varsayılan rol atama
+   */
+  async register(registerDto: RegisterDto) {
+    const { email, password, firstName, lastName, tenantName } = registerDto;
+
+    // Email kontrolü
+    const existingUser = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      throw new ConflictException('Bu email adresi zaten kullanılıyor');
+    }
+
+    // Şifre hashleme
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Transaction ile kullanıcı ve tenant oluştur
+    const result = await this.prisma.$transaction(async (tx) => {
+      // Tenant oluştur
+      const tenant = await tx.tenant.create({
+        data: {
+          name: tenantName || `${firstName} ${lastName}'nin Şirketi`,
+          isActive: true,
+        },
+      });
+
+      // Admin rolü oluştur (varsa kullan)
+      let adminRole = await tx.role.findFirst({
+        where: { name: 'Admin', tenantUsers: { some: { tenantId: tenant.id } } },
+      });
+
+      if (!adminRole) {
+        adminRole = await tx.role.create({
+          data: {
+            name: 'Admin',
+            description: 'Yönetici rolü',
+            tenantUsers: {
+              create: {
+                tenantId: tenant.id,
+                isActive: true,
+              },
+            },
+          },
+        });
+      }
+
+      // Kullanıcı oluştur
+      const user = await tx.user.create({
+        data: {
+          email,
+          password: hashedPassword,
+          firstName,
+          lastName,
+          tenantUsers: {
+            create: {
+              tenantId: tenant.id,
+              roleId: adminRole.id,
+              isActive: true,
+            },
+          },
+        },
+        include: {
+          tenantUsers: {
+            include: {
+              tenant: true,
+              role: true,
+            },
+          },
+        },
+      });
+
+      return user;
+    });
+
+    // JWT Token oluştur
+    const token = this.generateToken(result);
+
+    return {
+      user: {
+        id: result.id,
+        email: result.email,
+        firstName: result.firstName,
+        lastName: result.lastName,
+      },
+      token,
+    };
+  }
+
+  /**
+   * Kullanıcı giriş yapma
+   * - Email ve şifre kontrolü
+   * - Son giriş tarihi Güncelleme
+   * - JWT Token oluşturma
+   */
+  async login(loginDto: LoginDto) {
+    const { email, password } = loginDto;
+
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+      include: {
+        tenantUsers: {
+          include: {
+            tenant: true,
+            role: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('Geçersiz email veya şifre');
+    }
+
+    // Şifre kontrolü
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Geçersiz email veya şifre');
+    }
+
+    if (!user.isActive) {
+      throw new UnauthorizedException('Hesabınız pasif durumda');
+    }
+
+    // Son giriş tarihi güncelle
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { lastLogin: new Date() },
+    });
+
+    // Aktif tenant'ı bul
+    const activeTenantUser = user.tenantUsers.find((tu) => tu.isActive) || user.tenantUsers[0];
+
+    const token = this.generateToken(user);
+
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        tenantId: activeTenantUser?.tenantId,
+        tenantName: activeTenantUser?.tenant?.name,
+        role: activeTenantUser?.role?.name,
+      },
+      token,
+    };
+  }
+
+  /**
+   * JWT Token oluşturma
+   */
+  private generateToken(user: any): string {
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      roles: user.tenantUsers?.map((tu) => tu.role?.name) || [],
+    };
+
+    return this.jwtService.sign(payload);
+  }
+
+  /**
+   * Token yenileme
+   */
+  async refreshToken(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        tenantUsers: {
+          include: {
+            role: true,
+            tenant: true,
+          },
+        },
+      },
+    });
+
+    if (!user || !user.isActive) {
+      throw new UnauthorizedException();
+    }
+
+    return this.generateToken(user);
+  }
+}</code></pre>
+        </div>
+
+        <h3>3.7 Cari Hesap (Current Account) Service</h3>
+        <div class="section">
+            <pre><code>/**
+ * Cari Hesap Servisi
+ * - Müşteri ve Tedarikçi yönetimi
+ * - Borç/Alacak takibi
+ * - Cari ekstresi
+ */
+
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { PrismaService } from '../../database/prisma.service';
+import { CreateCurrentAccountDto, UpdateCurrentAccountDto } from './dto/current-account.dto';
+
+@Injectable()
+export class CurrentAccountService {
+  constructor(private prisma: PrismaService) {}
+
+  /**
+   * Cari hesap oluşturma
+   * - Kod tekrarı kontrolü
+   * - IBAN validasyonu
+   * - TCKN/VKN validasyonu
+   */
+  async create(tenantId: string, dto: CreateCurrentAccountDto) {
+    // Kod tekrarı kontrolü
+    const existing = await this.prisma.currentAccount.findUnique({
+      where: {
+        tenantId_code: {
+          tenantId,
+          code: dto.code,
+        },
+      },
+    });
+
+    if (existing) {
+      throw new BadRequestException('Bu cari kodu zaten mevcut');
+    }
+
+    // TCKN/VKN validasyonu
+    if (dto.identityNumber && !this.validateIdentityNumber(dto.identityNumber)) {
+      throw new BadRequestException('Geçersiz TC Kimlik Numarası');
+    }
+
+    // IBAN validasyonu
+    if (dto.iban && !this.validateIBAN(dto.iban)) {
+      throw new BadRequestException('Geçersiz IBAN');
+    }
+
+    const currentAccount = await this.prisma.currentAccount.create({
+      data: {
+        tenantId,
+        code: dto.code,
+        name: dto.name,
+        type: dto.type,
+        taxNumber: dto.taxNumber,
+        taxOffice: dto.taxOffice,
+        identityNumber: dto.identityNumber,
+        email: dto.email,
+        phone: dto.phone,
+        address: dto.address,
+        city: dto.city,
+        country: dto.country,
+        iban: dto.iban,
+        bankName: dto.bankName,
+        accountNumber: dto.accountNumber,
+        riskLimit: dto.riskLimit || 0,
+        creditLimit: dto.creditLimit || 0,
+        groupId: dto.groupId,
+        sectorCode: dto.sectorCode,
+        defaultCurrency: dto.defaultCurrency || 'TRY',
+        isActive: dto.isActive ?? true,
+      },
+    });
+
+    return currentAccount;
+  }
+
+  /**
+   * Tenant'a ait tüm cari hesapları getir
+   * - Filtreleme (tip, grup, durum)
+   * - Arama (kod, ad)
+   * - Sayfalama
+   */
+  async findAll(tenantId: string, filters: any) {
+    const { type, groupId, search, page = 1, limit = 20 } = filters;
+
+    const where: any = { tenantId };
+
+    if (type) where.type = type;
+    if (groupId) where.groupId = groupId;
+    if (search) {
+      where.OR = [
+        { code: { contains: search, mode: 'insensitive' } },
+        { name: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    const [accounts, total] = await Promise.all([
+      this.prisma.currentAccount.findMany({
+        where,
+        include: {
+          group: true,
+          _count: {
+            select: {
+              transactions: true,
+              invoices: true,
+            },
+          },
+        },
+        orderBy: { code: 'asc' },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.currentAccount.count({ where }),
+    ]);
+
+    // Her cari için bakiye hesapla
+    const accountsWithBalance = await Promise.all(
+      accounts.map(async (account) => {
+        const balances = await this.calculateBalance(tenantId, account.id);
+        return {
+          ...account,
+          ...balances,
+        };
+      }),
+    );
+
+    return {
+      data: accountsWithBalance,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  /**
+   * Cari hesap bakiyesi hesaplama
+   * - Alacak ve Borç toplamlarını hesapla
+   * - Çoklu döviz desteği
+   */
+  async calculateBalance(tenantId: string, currentAccountId: string) {
+    const transactions = await this.prisma.currentAccountTransaction.findMany({
+      where: {
+        tenantId,
+        currentAccountId,
+      },
+    });
+
+    let totalReceivable = 0; // Alacaklar
+    let totalPayable = 0; // Borçlar
+
+    transactions.forEach((t) => {
+      const amountTRY = Number(t.amountTRY);
+      if (t.type === 'RECEIVABLE') {
+        totalReceivable += amountTRY;
+      } else {
+        totalPayable += amountTRY;
+      }
+    });
+
+    return {
+      receivable: totalReceivable, // Alacak
+      payable: totalPayable, // Borç
+      balance: totalReceivable - totalPayable, // Bakiye (pozitif = alacak, negatif = borç)
+    };
+  }
+
+  /**
+   * Cari ekstresi (hareket listesi)
+   * - Belirli bir cari hesabın tüm hareketleri
+   * - Tarih aralığı filtreleme
+   */
+  async getAccountStatement(tenantId: string, currentAccountId: string, dateRange?: any) {
+    const where: any = {
+      tenantId,
+      currentAccountId,
+    };
+
+    if (dateRange?.startDate && dateRange?.endDate) {
+      where.createdAt = {
+        gte: new Date(dateRange.startDate),
+        lte: new Date(dateRange.endDate),
+      };
+    }
+
+    const transactions = await this.prisma.currentAccountTransaction.findMany({
+      where,
+      include: {
+        invoice: {
+          select: {
+            invoiceNumber: true,
+            date: true,
+          },
+        },
+        slip: {
+          select: {
+            slipNumber: true,
+            date: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    // Bakiye hesapla (kademeli)
+    let runningBalance = 0;
+    const statement = transactions.map((t) => {
+      const amount = Number(t.amountTRY);
+      if (t.direction === 'IN') {
+        runningBalance -= amount; // Giriş = bakiye azalır (alacak)
+      } else {
+        runningBalance += amount; // Çıkış = bakiye artar (borç)
+      }
+
+      return {
+        ...t,
+        amount: Number(t.amountTRY),
+        runningBalance,
+      };
+    });
+
+    return statement;
+  }
+
+  /**
+   * Bakiye yaşlandırma raporu
+   * - Vadesi geçen alacakları grupla
+   * - 0-30, 31-60, 61-90, 90+ gün
+   */
+  async getAgingReport(tenantId: string, currentAccountId?: string) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const where: any = {
+      tenantId,
+      type: 'RECEIVABLE',
+      dueDate: { lte: today }, // Vadesi geçmiş
+    };
+
+    if (currentAccountId) {
+      where.currentAccountId = currentAccountId;
+    }
+
+    const overdueTransactions = await this.prisma.currentAccountTransaction.findMany({
+      where,
+      include: {
+        currentAccount: {
+          select: {
+            code: true,
+            name: true,
+          },
+        },
+      },
+    });
+
+    // Yaşlandırma grupları
+    const aging = {
+      '0-30': 0,
+      '31-60': 0,
+      '61-90': 0,
+      '90+': 0,
+    };
+
+    const byCustomer: any = {};
+
+    overdueTransactions.forEach((t) => {
+      const dueDate = new Date(t.dueDate!);
+      const diffTime = today.getTime() - dueDate.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      const amount = Number(t.amountTRY);
+
+      if (diffDays <= 30) {
+        aging['0-30'] += amount;
+      } else if (diffDays <= 60) {
+        aging['31-60'] += amount;
+      } else if (diffDays <= 90) {
+        aging['61-90'] += amount;
+      } else {
+        aging['90+'] += amount;
+      }
+
+      // Müşteriye göre grupla
+      const customerKey = t.currentAccountId;
+      if (!byCustomer[customerKey]) {
+        byCustomer[customerKey] = {
+          code: t.currentAccount.code,
+          name: t.currentAccount.name,
+          total: 0,
+          aging: { '0-30': 0, '31-60': 0, '61-90': 0, '90+': 0 },
+        };
+      }
+      byCustomer[customerKey].total += amount;
+
+      if (diffDays <= 30) byCustomer[customerKey].aging['0-30'] += amount;
+      else if (diffDays <= 60) byCustomer[customerKey].aging['31-60'] += amount;
+      else if (diffDays <= 90) byCustomer[customerKey].aging['61-90'] += amount;
+      else byCustomer[customerKey].aging['90+'] += amount;
+    });
+
+    return { aging, byCustomer: Object.values(byCustomer) };
+  }
+
+  /**
+   * TC Kimlik Numarası validasyonu
+   * Türkiye'de 11 haneli olmalı
+   */
+  private validateIdentityNumber(id: string): boolean {
+    if (!id || id.length !== 11) return false;
+    if (!/^\d+$/.test(id)) return false;
+
+    // İlk 10 hanenin toplamının son hanesi 11. haneye eşit olmalı
+    // (Basit kontrol - gerçek algoritma daha karmaşık)
+    const digits = id.split('').map(Number);
+    return digits[10] === (digits.slice(0, 10).reduce((a, b) => a + b, 0) % 10);
+  }
+
+  /**
+   * IBAN validasyonu
+   * TR + 2 kontrol hanesi + 26 hane = 30 hane
+   */
+  private validateIBAN(iban: string): boolean {
+    const cleaned = iban.replace(/\s/g, '').toUpperCase();
+
+    // TR IBAN kontrolü
+    if (!cleaned.startsWith('TR')) return false;
+    if (cleaned.length !== 26) return false;
+    if (!/^[A-Z0-9]+$/.test(cleaned)) return false;
+
+    // Mod 97 kontrolü
+    const rearranged = cleaned.slice(4) + cleaned.slice(0, 4);
+    const numeric = rearranged
+      .split('')
+      .map((char) => {
+        const code = char.charCodeAt(0);
+        return code >= 65 && code <= 90 ? (code - 55).toString() : char;
+      })
+      .join('');
+
+    // İlk iki hane (kontrol haneleri) 97'ye bölümünden kalan 1 olmalı
+    const mod = BigInt(numeric) % 97n;
+    return mod === 1n;
+  }
+}</code></pre>
+        </div>
+
+        <h2>⚙️ 4. Frontend Kurulum Dosyaları</h2>
+        
+        <h3>4.1 package.json (Frontend)</h3>
+        <div class="section">
+            <pre><code>{
+  "name": "diji-muhasebe-client",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix"
+  },
+  "dependencies": {
+    "next": "14.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@tanstack/react-query": "^5.17.9",
+    "zod": "^3.22.4",
+    "react-hook-form": "^7.49.3",
+    "@hookform/resolvers": "^3.3.4",
+    "recharts": "^2.10.4",
+    "lucide-react": "^0.312.0",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.2.0",
+    "class-variance-authority": "^0.7.0",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-select": "^2.0.0",
+    "@radix-ui/react-tabs": "^1.0.4",
+    "@radix-ui/react-toast": "^1.1.5",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-label": "^2.0.2",
+    "date-fns": "^3.2.0",
+    "decimal.js": "^10.4.3",
+    "xlsx": "^0.18.5",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "14.1.0"
+  }
+}</code></pre>
+        </div>
+
+        <h3>4.2 tailwind.config.ts</h3>
+        <div class="section">
+            <pre><code>import type { Config } from 'tailwindcss'
+
+const config: Config = {
+  darkMode: ["class"],
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
+    extend: {
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
+}
+
+export default config</code></pre>
+        </div>
+
+        <h3>4.3 globals.css</h3>
+        <div class="section">
+            <pre><code>@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Sayısal veriler için */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Scrollbar stilleri */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}</code></pre>
+        </div>
+
+        <h3>4.4 API Client (lib/api.ts)</h3>
+        <div class="section">
+            <pre><code>/**
+ * API Client - Backend ile iletişim
+ * Next.js App Router için API çağrıları
+ */
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+
+interface RequestOptions extends RequestInit {
+  params?: Record<string, any>;
+}
+
+class ApiClient {
+  private baseURL: string;
+  private token: string | null = null;
+
+  constructor(baseURL: string) {
+    this.baseURL = baseURL;
+  }
+
+  /**
+   * Token ayarla
+   */
+  setToken(token: string) {
+    this.token = token;
+  }
+
+  /**
+   * Token temizle
+   */
+  clearToken() {
+    this.token = null;
+  }
+
+  /**
+   * Header oluştur
+   */
+  private getHeaders(): HeadersInit {
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
+
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+
+    return headers;
+  }
+
+  /**
+   * URL oluştur (query params ile)
+   */
+  private buildURL(endpoint: string, params?: Record<string, any>): string {
+    const url = new URL(`${this.baseURL}${endpoint}`);
+    
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          url.searchParams.append(key, String(value));
+        }
+      });
+    }
+
+    return url.toString();
+  }
+
+  /**
+   * Request yap
+   */
+  private async request<T>(
+    endpoint: string,
+    options: RequestOptions = {}
+  ): Promise<T> {
+    const { params, ...fetchOptions } = options;
+    const url = this.buildURL(endpoint, params);
+
+    const response = await fetch(url, {
+      ...fetchOptions,
+      headers: {
+        ...this.getHeaders(),
+        ...fetchOptions.headers,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || `HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  /**
+   * GET request
+   */
+  get<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
+    return this.request<T>(endpoint, { method: 'GET', params });
+  }
+
+  /**
+   * POST request
+   */
+  post<T>(endpoint: string, data?: any): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  /**
+   * PUT request
+   */
+  put<T>(endpoint: string, data?: any): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+  }
+
+  /**
+   * PATCH request
+   */
+  patch<T>(endpoint: string, data?: any): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  /**
+   * DELETE request
+   */
+  delete<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'DELETE' });
+  }
+}
+
+// Singleton instance
+export const api = new ApiClient(API_BASE_URL);
+
+// Auth API
+export const authApi = {
+  login: (data: { email: string; password: string }) =>
+    api.post('/auth/login', data),
+  register: (data: any) =>
+    api.post('/auth/register', data),
+  me: () =>
+    api.get('/auth/me'),
+};
+
+// Current Accounts API
+export const currentAccountsApi = {
+  getAll: (params?: any) =>
+    api.get('/current-accounts', params),
+  getById: (id: string) =>
+    api.get(`/current-accounts/${id}`),
+  create: (data: any) =>
+    api.post('/current-accounts', data),
+  update: (id: string, data: any) =>
+    api.put(`/current-accounts/${id}`, data),
+  delete: (id: string) =>
+    api.delete(`/current-accounts/${id}`),
+  getStatement: (id: string, params?: any) =>
+    api.get(`/current-accounts/${id}/statement`, params),
+  getAgingReport: (params?: any) =>
+    api.get('/current-accounts/aging-report', params),
+};
+
+// Inventory API
+export const inventoryApi = {
+  getAll: (params?: any) =>
+    api.get('/inventory', params),
+  getById: (id: string) =>
+    api.get(`/inventory/${id}`),
+  create: (data: any) =>
+    api.post('/inventory', data),
+  update: (id: string, data: any) =>
+    api.put(`/inventory/${id}`, data),
+  delete: (id: string) =>
+    api.delete(`/inventory/${id}`),
+  getMovements: (productId: string, params?: any) =>
+    api.get(`/inventory/${productId}/movements`, params),
+  getLowStock: () =>
+    api.get('/inventory/low-stock'),
+};
+
+// Invoices API
+export const invoicesApi = {
+  getAll: (params?: any) =>
+    api.get('/invoices', params),
+  getById: (id: string) =>
+    api.get(`/invoices/${id}`),
+  create: (data: any) =>
+    api.post('/invoices', data),
+  update: (id: string, data: any) =>
+    api.put(`/invoices/${id}`, data),
+  delete: (id: string) =>
+    api.delete(`/invoices/${id}`),
+  approve: (id: string) =>
+    api.post(`/invoices/${id}/approve`),
+  cancel: (id: string) =>
+    api.post(`/invoices/${id}/cancel`),
+  addPayment: (id: string, data: any) =>
+    api.post(`/invoices/${id}/payments`, data),
+};
+
+// Accounting API
+export const accountingApi = {
+  getAccounts: (params?: any) =>
+    api.get('/accounting/accounts', params),
+  getSlips: (params?: any) =>
+    api.get('/accounting/slips', params),
+  createSlip: (data: any) =>
+    api.post('/accounting/slips', data),
+  getMizan: (params?: any) =>
+    api.get('/accounting/mizan', params),
+  getTrialBalance: (params?: any) =>
+    api.get('/accounting/trial-balance', params),
+  getBalanceSheet: (params?: any) =>
+    api.get('/accounting/balance-sheet', params),
+  getIncomeStatement: (params?: any) =>
+    api.get('/accounting/income-statement', params),
+};
+
+// Finance API
+export const financeApi = {
+  getCashAccounts: (params?: any) =>
+    api.get('/finance/cash-accounts', params),
+  getBankAccounts: (params?: any) =>
+    api.get('/finance/bank-accounts', params),
+  createCashTransaction: (data: any) =>
+    api.post('/finance/cash/transactions', data),
+  createBankTransaction: (data: any) =>
+    api.post('/finance/bank/transactions', data),
+};
+
+// Reports API
+export const reportsApi = {
+  getDashboard: () =>
+    api.get('/reports/dashboard'),
+  getSalesReport: (params?: any) =>
+    api.get('/reports/sales', params),
+  getPurchaseReport: (params?: any) =>
+    api.get('/reports/purchases', params),
+  getProfitLoss: (params?: any) =>
+    api.get('/reports/profit-loss', params),
+  exportExcel: (type: string, params?: any) =>
+    api.get(`/reports/export/${type}`, { ...params, responseType: 'blob' } as any),
+};</code></pre>
+        </div>
+
+        <h3>4.5 Dashboard Ana Sayfa</h3>
+        <div class="section">
+            <pre><code>/**
+ * Dashboard Ana Sayfa
+ * İstatistikler, grafikler ve hızlı işlemler
+ */
+
+'use client';
+
+import { useEffect, useState } from 'react';
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardHeader, 
+  CardTitle 
+} from '@/components/ui/card';
+import { 
+  DollarSign, 
+  Users, 
+  Package, 
+  FileText, 
+  TrendingUp, 
+  TrendingDown,
+  ArrowUpRight,
+  ArrowDownRight,
+  Clock
+} from 'lucide-react';
+import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell
+} from 'recharts';
+import { reportsApi } from '@/lib/api';
+
+// Renk paleti
+const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+
+export default function DashboardPage() {
+  const [loading, setLoading] = useState(true);
+  const [dashboardData, setDashboardData] = useState<any>(null);
+
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  const loadDashboard = async () => {
+    try {
+      setLoading(true);
+      const data = await reportsApi.getDashboard();
+      setDashboardData(data);
+    } catch (error) {
+      console.error('Dashboard verileri yüklenirken hata:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6 space-y-6">
+      {/* Başlık */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold">Genel Bakış</h1>
+          <p className="text-muted-foreground">İşletmenizin finansal durumu</p>
+        </div>
+        <div className="flex gap-2">
+          <button className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90">
+            + Yeni Fatura
+          </button>
+          <button className="px-4 py-2 border border-input bg-background rounded-lg hover:bg-accent">
+            Rapor İndir
+          </button>
+        </div>
+      </div>
+
+      {/* İstatistik Kartları */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Toplam Gelir */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Toplam Gelir</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">₺{dashboardData?.totalRevenue?.toLocaleString('tr-TR') || '0'}</div>
+            <p className="text-xs text-muted-foreground flex items-center mt-1">
+              {dashboardData?.revenueChange >= 0 ? (
+                <ArrowUpRight className="h-3 w-3 text-green-500 mr-1" />
+              ) : (
+                <ArrowDownRight className="h-3 w-3 text-red-500 mr-1" />
+              )}
+              {Math.abs(dashboardData?.revenueChange || 0)}% geçen aydan
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Toplam Gider */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Toplam Gider</CardTitle>
+            <TrendingDown className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">₺{dashboardData?.totalExpense?.toLocaleString('tr-TR') || '0'}</div>
+            <p className="text-xs text-muted-foreground flex items-center mt-1">
+              {dashboardData?.expenseChange >= 0 ? (
+                <ArrowUpRight className="h-3 w-3 text-red-500 mr-1" />
+              ) : (
+                <ArrowDownRight className="h-3 w-3 text-green-500 mr-1" />
+              )}
+              {Math.abs(dashboardData?.expenseChange || 0)}% geçen aydan
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Müşteri Sayısı */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Aktif Müşteriler</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{dashboardData?.customerCount || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {dashboardData?.newCustomersThisMonth || 0} yeni bu ay
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Stok Miktarı */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Stok Değeri</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">₺{dashboardData?.inventoryValue?.toLocaleString('tr-TR') || '0'}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {dashboardData?.lowStockCount || 0} kritik stok
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Grafikler */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Gelir/Gider Grafiği */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Gelir ve Gider Trend</CardTitle>
+            <CardDescription>Son 12 ay</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={dashboardData?.monthlyData || []}>
+                <defs>
+                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  </linearGradient>
+                  <linearGradient id="colorExpense" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip 
+                  formatter={(value: number) => `₺${value.toLocaleString('tr-TR')}`}
+                  contentStyle={{ borderRadius: '8px' }}
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="revenue" 
+                  stroke="#10b981" 
+                  fillOpacity={1} 
+                  fill="url(#colorRevenue)" 
+                  name="Gelir"
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="expense" 
+                  stroke="#ef4444" 
+                  fillOpacity={1} 
+                  fill="url(#colorExpense)" 
+                  name="Gider"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Kategori Bazlı Satışlar */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Satışlar Kategoriye Göre</CardTitle>
+            <CardDescription>Bu ay</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={dashboardData?.salesByCategory || []}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {(dashboardData?.salesByCategory || []).map((entry: any, index: number) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip formatter={(value: number) => `₺${value.toLocaleString('tr-TR')}`} />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Son İşlemler ve Vadesi Gelen Ödemeler */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Son Faturalar */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Son Faturalar</CardTitle>
+            <CardDescription>En son oluşturulan faturalar</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {(dashboardData?.recentInvoices || []).map((invoice: any) => (
+                <div key={invoice.id} className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-primary/10 rounded-lg">
+                      <FileText className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-medium">{invoice.invoiceNumber}</p>
+                      <p className="text-sm text-muted-foreground">{invoice.customerName}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">₺{Number(invoice.total).toLocaleString('tr-TR')}</p>
+                    <p className="text-sm text-muted-foreground">{invoice.date}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Vadesi Gelen Ödemeler */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Vadesi Gelen Ödemeler</CardTitle>
+            <CardDescription>Takip edilmesi gereken ödemeler</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {(dashboardData?.upcomingPayments || []).map((payment: any) => (
+                <div key={payment.id} className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className={`p-2 rounded-lg ${payment.isOverdue ? 'bg-red-100' : 'bg-yellow-100'}`}>
+                      <Clock className={`h-4 w-4 ${payment.isOverdue ? 'text-red-600' : 'text-yellow-600'}`} />
+                    </div>
+                    <div>
+                      <p className="font-medium">{payment.customerName}</p>
+                      <p className="text-sm text-muted-foreground">{payment.dueDate}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">₺{Number(payment.amount).toLocaleString('tr-TR')}</p>
+                    <p className={`text-sm ${payment.isOverdue ? 'text-red-600' : 'text-yellow-600'}`}>
+                      {payment.isOverdue ? 'Vadesi Geçti' : `${payment.daysLeft} gün kaldı`}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}</code></pre>
+        </div>
+
+        <h2>🗺️ 5. Kodlama Yol Haritası</h2>
+        <div class="section">
+            <p>Aşağıdaki sıralamaya göre kodlamayı tamamlayabilirsiniz:</p>
+            
+            <div style="margin-top: 20px;">
+                <span class="step">1. Adım</span>
+                <h3 style="display: inline; margin-left: 10px;">Temel Kurulum ve Veritabanı</h3>
+                <ul>
+                    <li>Proje oluşturma (Next.js + NestJS)</li>
+                    <li>Prisma schema oluşturma ve migration</li>
+                    <li>Temel konfigürasyon (.env, tsconfig)</li>
+                    <li>Auth modülü (JWT, Login, Register)</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <span class="step">2. Adım</span>
+                <h3 style="display: inline; margin-left: 10px;">Cari Hesap Yönetimi</h3>
+                <ul>
+                    <li>Cari kart CRUD</li>
+                    <li>Cari gruplama</li>
+                    <li>Cari işlemleri (borç/alacak)</li>
+                    <li>Cari ekstresi</li>
+                    <li>Bakiye yaşlandırma raporu</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <span class="step">3. Adım</span>
+                <h3 style="display: inline; margin-left: 10px;">Stok Yönetimi</h3>
+                <ul>
+                    <li>Ürün kartları</li>
+                    <li>Depo yönetimi</li>
+                    <li>Stok hareketleri (giriş/çıkış/transfer)</li>
+                    <li>Barkod sistemi</li>
+                    <li>Kritik stok uyarıları</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <span class="step">4. Adım</span>
+                <h3 style="display: inline; margin-left: 10px;">Fatura Yönetimi</h3>
+                <ul>
+                    <li>Satış/Alış faturası</li>
+                    <li>İrsaliye</li>
+                    <li>Proforma/Teklif</li>
+                    <li>KDV ve tevkifat hesaplama</li>
+                    <li>e-Fatura XML yapısı</li>
+                    <li>Ödeme takibi</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <span class="step">5. Adım</span>
+                <h3 style="display: inline; margin-left: 10px;">Genel Muhasebe</h3>
+                <ul>
+                    <li>Tek Düzen Hesap Planı (TDHP)</li>
+                    <li>Yevmiye defteri</li>
+                    <li>Defter-i Kebir</li>
+                    <li>Mizan</li>
+                    <li>Otomatik muhasebeleşme</li>
+                    <li>Bilanço ve Gelir Tablosu</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <span class="step">6. Adım</span>
+                <h3 style="display: inline; margin-left: 10px;">Finans Yönetimi</h3>
+                <ul>
+                    <li>Kasa işlemleri</li>
+                    <li>Banka hesapları</li>
+                    <li>Çek/Senet takibi</li>
+                    <li>Döviz kurları entegrasyonu</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <span class="step">7. Adım</span>
+                <h3 style="display: inline; margin-left: 10px;">Personel ve Bordro</h3>
+                <ul>
+                    <li>Personel kartları</li>
+                    <li>Maaş tahakkuku</li>
+                    <li>AGİ ve SGK hesaplamaları</li>
+                    <li>İzin takibi</li>
+                </ul>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <span class="step">8. Adım</span>
+                <h3 style="display: inline; margin-left: 10px;">Raporlama ve Dashboard</h3>
+                <ul>
+                    <li>Dashboard grafikleri</li>
+                    <li>Finansal raporlar</li>
+                    <li>Excel/PDF export</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Önemli Not:</strong> Bu kodlar bir başlangıç noktasıdır. Gerçek bir üretim ortamında kullanmadan önce:
+            <ul style="margin-top: 10px;">
+                <li>Test yazılmalıdır</li>
+                <li>Güvenlik kontrolleri yapılmalıdır</li>
+                <li>Error handling iyileştirilmelidir</li>
+                <li>Performans optimizasyonları yapılmalıdır</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; padding: 40px 0;">
+            <h2 style="color: #3b82f6;">🚀 Başarılar Dileriz!</h2>
+            <p style="margin-top: 10px; color: #94a3b8;">
+                Diji Muhasebe - Türkiye'nin Modern Muhasebe Çözümü
+            </p>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #64748b;">
+                © 2024 Diji Muhasebe. Tüm hakları saklıdır.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
